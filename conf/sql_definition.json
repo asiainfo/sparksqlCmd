@@ -1,0 +1,12 @@
+[
+  {
+    "alias":"公共安全-特定区域客流量常态化监控号码归属地分钟表",
+    "sql":"select * from user_info",
+    "outputPath":"/tmp/xyx"
+  },
+  {
+    "alias":"公共安全-特定区域客流量常态化监控号码归属地分钟表",
+    "sql":"select * from user_info",
+    "outputPath":"/tmp/abc"
+  }
+]
