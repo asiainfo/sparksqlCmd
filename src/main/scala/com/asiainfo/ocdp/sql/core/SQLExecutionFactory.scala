@@ -7,7 +7,7 @@ import com.asiainfo.ocdp.sql.impl.{HiveContextImpl, ThriftServerImpl}
   */
 object SQLExecutionFactory {
   val getSQLExecution:SQLExecution = {
-    val sqlType = Conf.properties("sql.type")
+    val sqlType = Conf.properties.getOrElse("sql.type", "thrift")
     sqlType match {
       case "thrift" => new ThriftServerImpl
       case _ => new HiveContextImpl

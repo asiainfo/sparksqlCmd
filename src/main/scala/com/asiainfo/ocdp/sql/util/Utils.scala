@@ -3,6 +3,7 @@ package com.asiainfo.ocdp.sql.util
 import java.io.{File, FileInputStream, IOException, InputStreamReader}
 import java.util.Properties
 
+import org.apache.commons.lang.StringUtils
 import org.apache.spark.SparkException
 
 import scala.collection.JavaConversions._
@@ -33,4 +34,8 @@ object Utils {
       inReader.close()
     }
   }
+
+  def removeLastSeparator(value: String, separator: String): String = StringUtils.removeEnd(value, separator)
+
+  def removeLastSeparator(value: StringBuilder, separator: String): String = removeLastSeparator(value.toString, separator)
 }

@@ -1,5 +1,7 @@
 package com.asiainfo.ocdp.sql.core
 
+import java.io.File
+
 import org.apache.log4j.PropertyConfigurator
 import org.slf4j.{Logger, LoggerFactory}
 
@@ -20,6 +22,7 @@ trait Logging {
   // Method to get or create the logger for this object
   protected def log: Logger = {
     if (log_ == null) {
+      System.setProperty("spark_export_sql_log_path", Conf.HOME_PATH + File.separator + "logs")
       PropertyConfigurator.configure(Conf.log4jFilePath)
       log_ = LoggerFactory.getLogger(logName)
     }

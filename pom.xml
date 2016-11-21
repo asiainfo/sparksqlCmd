@@ -4,31 +4,25 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>sparksqlRun</groupId>
-    <artifactId>sparksqlRun</artifactId>
+    <groupId>export_data</groupId>
+    <artifactId>export_data</artifactId>
     <version>1.0</version>
 
     <properties>
-        <scala.version>2.10.4</scala.version>
-        <scala.binary.version>2.10</scala.binary.version>
         <spark.version>1.6.0</spark.version>
     </properties>
 
     <dependencies>
-
-        <!-- https://mvnrepository.com/artifact/log4j/log4j -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.6</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
@@ -44,23 +38,22 @@
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.10</artifactId>
-            <version>1.6.0</version>
+            <version>${spark.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-sql_2.10</artifactId>
-            <version>1.6.0</version>
+            <version>${spark.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-hive_2.10</artifactId>
-            <version>1.6.0</version>
+            <version>${spark.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-yarn_2.10</artifactId>
-            <version>1.6.0</version>
+            <version>${spark.version}</version>
         </dependency>
 
         <dependency>
@@ -89,6 +82,13 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-jdbc</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+
+        <!--
+        <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-compiler</artifactId>
             <version>${scala.version}</version>
@@ -113,6 +113,7 @@
             <artifactId>scalap</artifactId>
             <version>${scala.version}</version>
         </dependency>
+        -->
 
     </dependencies>
 

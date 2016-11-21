@@ -16,12 +16,8 @@ class HiveContextImpl extends SQLExecution with Logging{
     val hiveContext = new HiveContext(sc)
     import hiveContext.sql
 
-    //println("create table user_info .. ")
-    //sql("USE default")
-    //sql("CREATE EXTERNAL TABLE IF NOT EXISTS user_info(imsi STRING, tour_area STRING, security_area STRING) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE LOCATION '/tmp/test'")
-
     Conf.allSQLDefinitions.foreach(sqlDefinition => {
-      sql(StringUtils.trimToEmpty(sqlDefinition.sql)).write.format("com.databricks.spark.csv").option("header", "false").save(sqlDefinition.outputPath)
+      sql(StringUtils.trimToEmpty(sqlDefinition.sql)).write.format("com.databricks.spark.csv").option("header", Conf.properties.getOrElse(Conf.OUTPUT_TABLE_HEADER_ENABLE, "false")).save(sqlDefinition.outputPath)
     })
 
     sc.stop()

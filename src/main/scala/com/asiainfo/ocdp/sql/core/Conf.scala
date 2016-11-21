@@ -22,7 +22,11 @@ object Conf extends Logging{
   val HOME_PATH = Paths.get(classOf[SQLDefinition].getProtectionDomain.getCodeSource.getLocation.getPath).getParent.getParent.toString
   val log4jFilePath = HOME_PATH + File.separator + "conf" + File.separator + "log4j.properties";
   val confFilePath = HOME_PATH + File.separator + "conf" + File.separator + "running.properties";
-  val sqlDefinitionFilePath = HOME_PATH + File.separator + "conf" + File.separator + "sql_definition.json";
+
+  var sqlDefinitionFilePath = "";
+
+  val OUTPUT_TABLE_HEADER_ENABLE = "output.table.header.enable"
+  val SEPARATOR = "output.table.column.separator"
 
   val properties: mutable.HashMap[String, String] = {
     val defaultProperties = new mutable.HashMap[String, String]()
@@ -34,6 +38,6 @@ object Conf extends Logging{
     defaultProperties
   }
 
-  val allSQLDefinitions = fromJson[List[SQLDefinition]](FileUtils.readFileToString(new File(sqlDefinitionFilePath), "UTF-8"))
+  lazy val allSQLDefinitions = fromJson[List[SQLDefinition]](FileUtils.readFileToString(new File(sqlDefinitionFilePath), "UTF-8"))
 
 }
