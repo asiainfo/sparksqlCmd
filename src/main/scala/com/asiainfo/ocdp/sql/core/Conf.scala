@@ -22,6 +22,7 @@ object Conf extends Logging{
   val HOME_PATH = Paths.get(classOf[SQLDefinition].getProtectionDomain.getCodeSource.getLocation.getPath).getParent.getParent.toString
   val log4jFilePath = HOME_PATH + File.separator + "conf" + File.separator + "log4j.properties";
   val confFilePath = HOME_PATH + File.separator + "conf" + File.separator + "running.properties";
+  val sparkConfFilePath = HOME_PATH + File.separator + "conf" + File.separator + "spark-yarn.properties";
 
   var sqlDefinitionFilePath = "";
 
