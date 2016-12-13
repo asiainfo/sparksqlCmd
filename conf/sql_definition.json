@@ -1,12 +1,73 @@
 [
   {
+    "name":"security-location_IMSI_SEGMENT_ATTR",
     "alias":"公共安全-特定区域客流量常态化监控号码归属地分钟表",
-    "sql":"select * from user_info",
-    "outputPath":"/tmp/xyx"
+    "sql":"select SECURITY_AREA,CITY_CODE,count(ROW) from SITEPOSITION group by SECURITY_AREA,CITY_CODE",
+    "dateFormat":"yyyy-MM-dd",
+    "timeFormat":"yyyy-MM-dd HH:mm"
   },
   {
-    "alias":"公共安全-特定区域客流量常态化监控号码归属地分钟表",
-    "sql":"select * from user_info",
-    "outputPath":"/tmp/abc"
+    "name":"tour-location_IMSI_SEGMENT_ATTR",
+    "alias":"景区-特定区域客流量常态化监控号码归属地分钟表",
+    "sql":"select TOUR_AREA,CITY_CODE,count(ROW) from SITEPOSITION group by TOUR_AREA,CITY_CODE",
+    "dateFormat":"yyyyMMdd",
+    "timeFormat":"yyyyMMddHHmm"
+  },
+  {
+    "name":"security-location_registered_residence",
+    "alias":"公共安全-特定区域客流量常态化监控户籍地分钟表",
+    "sql":"select SECURITY_AREA,PSPT_EPARCHY_ID,count(ROW) from SITEPOSITION group by SECURITY_AREA,PSPT_EPARCHY_ID",
+    "dateFormat":"yyyy-MM-dd",
+    "timeFormat":"yyyy-MM-dd HH:mm"
+  },
+  {
+    "name":"security-location_registered_residence_crowd_structure",
+    "alias":"公共安全-特定区域客流量常态化监控户籍地人群结构分钟表",
+    "sql":"select SECURITY_AREA,AGE_LEVEL,SEX,EPARCHY_ID,PSPT_PROV_CODE,PSPT_EPARCHY_ID,count(ROW) from SITEPOSITION group by SECURITY_AREA,AGE_LEVEL,SEX,EPARCHY_ID,PSPT_PROV_CODE,PSPT_EPARCHY_ID",
+    "dateFormat":"yyyy-MM-dd",
+    "timeFormat":"yyyy-MM-dd HH:mm"
+  },
+  {
+    "name":"security-location_area",
+    "alias":"公共安全-特定区域客流量常态化监控区域级分钟表",
+    "sql":"select SECURITY_AREA,count(ROW) from SITEPOSITION group by SECURITY_AREA",
+    "dateFormat":"yyyy-MM-dd",
+    "timeFormat":"yyyy-MM-dd HH:mm"
+  },
+  {
+    "name":"tour-location_area",
+    "alias":"景区-特定区域客流量常态化监控区域级分钟表",
+    "sql":"select TOUR_AREA,count(ROW) from SITEPOSITION group by TOUR_AREA",
+    "dateFormat":"yyyyMMdd",
+    "timeFormat":"yyyyMMddHHmm"
+  },
+  {
+    "name":"security-footfall_location_area",
+    "alias":"公共安全-客流量常态化监控热力图特定区域级分钟表",
+    "sql":"select LONGITUDE,LATITUDE,SECURITY_AREA,count(ROW) from SITEPOSITION group by LONGITUDE,LATITUDE,SECURITY_AREA",
+    "dateFormat":"yyyy-MM-dd",
+    "timeFormat":"yyyy-MM-dd HH:mm",
+    "handlerClass":"com.asiainfo.ocdp.sql.output.PeriodFieldAssemblyimpl"
+  },
+  {
+    "name":"tour-footfall_location_area",
+    "alias":"景区-客流量常态化监控热力图特定区域级分钟表",
+    "sql":"select LONGITUDE,LATITUDE,TOUR_AREA,count(ROW) from SITEPOSITION group by LONGITUDE,LATITUDE,TOUR_AREA",
+    "dateFormat":"yyyyMMdd",
+    "timeFormat":"yyyyMMddHHmm"
+  },
+  {
+    "name":"tour-footfall_prefectural",
+    "alias":"景区-客流量常态化监控热力图地市级分钟表",
+    "sql":"select LONGITUDE,LATITUDE,EPARCHY_ID,count(ROW) from SITEPOSITION group by LONGITUDE,LATITUDE,EPARCHY_ID",
+    "dateFormat":"yyyyMMdd",
+    "timeFormat":"yyyyMMddHHmm"
+  },
+  {
+    "name":"tour-footfall_province",
+    "alias":"景区-客流量常态化监控热力图全省分钟表",
+    "sql":"select LONGITUDE,LATITUDE,count(ROW) from SITEPOSITION group by LONGITUDE,LATITUDE",
+    "dateFormat":"yyyyMMdd",
+    "timeFormat":"yyyyMMddHHmm"
   }
 ]

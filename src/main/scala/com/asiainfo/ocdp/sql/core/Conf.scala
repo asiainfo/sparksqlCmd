@@ -15,16 +15,20 @@ import org.apache.commons.io.FileUtils
   */
 object Conf extends Logging{
 
-  case class SQLDefinition(sql: String, outputPath: String, alias: String)
-
-  //val properties = new Properties()
+  case class SQLDefinition(name:String, sql: String, outputPath: String, alias: String, dateFormat: String, timeFormat: String, handlerClass: String)
 
   val HOME_PATH = Paths.get(classOf[SQLDefinition].getProtectionDomain.getCodeSource.getLocation.getPath).getParent.getParent.toString
-  val log4jFilePath = HOME_PATH + File.separator + "conf" + File.separator + "log4j.properties";
-  val confFilePath = HOME_PATH + File.separator + "conf" + File.separator + "running.properties";
-  val sparkConfFilePath = HOME_PATH + File.separator + "conf" + File.separator + "spark-yarn.properties";
+  val log4jFilePath = HOME_PATH + File.separator + "conf" + File.separator + "log4j.properties"
+  val confFilePath = HOME_PATH + File.separator + "conf" + File.separator + "running.properties"
+  val sparkConfFilePath = HOME_PATH + File.separator + "conf" + File.separator + "spark-yarn.properties"
+  val DEFAULT_HANDLER_CLASS = "com.asiainfo.ocdp.sql.output.AssemblyImpl"
 
-  var sqlDefinitionFilePath = "";
+  val BASE_OUTPUT_DIR = HOME_PATH + File.separator + "result"
+  val TABLE_FILE_TYPE = ".txt"
+  val EXPORT_INTERVAL_S = "export.interval-s"
+  val DEFAULT_EXPORT_INTERVAL_S = 600L
+
+  var sqlDefinitionFilePath = ""
 
   val OUTPUT_TABLE_HEADER_ENABLE = "output.table.header.enable"
   val SEPARATOR = "output.table.column.separator"
