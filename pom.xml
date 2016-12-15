@@ -12,6 +12,16 @@
         <spark.version>1.6.0</spark.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>hdp</id>
+            <name>hdp</name>
+            <url>http://repo.hortonworks.com/content/groups/public/</url>
+            <layout>default</layout>
+            <snapshots><enabled>false</enabled></snapshots>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>log4j</groupId>
