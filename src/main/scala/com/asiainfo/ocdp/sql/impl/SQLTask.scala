@@ -1,7 +1,7 @@
 package com.asiainfo.ocdp.sql.impl
 
 import java.io.File
-import java.sql.{Connection, PreparedStatement}
+import java.sql.{Connection, DriverManager, PreparedStatement}
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.concurrent.CountDownLatch
@@ -14,16 +14,22 @@ import org.apache.commons.io.FileUtils
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.math.NumberUtils
 
-import scala.collection.mutable.ArrayBuffer
 import scala.collection.JavaConversions._
+import scala.collection.mutable.ArrayBuffer
 
 /**
   * Created by peng on 2016/12/13.
   */
-class SQLTask(downLatch: CountDownLatch, connection: Connection, statement: PreparedStatement, sqlDefinition: SQLDefinition) extends Runnable with Logging {
+class SQLTask(downLatch: CountDownLatch, sqlDefinition: SQLDefinition) extends Runnable with Logging {
+
   override def run(): Unit = {
-    try{
+    var connection: Connection = null
+    var statement: PreparedStatement = null
+    try {
+      connection = DriverManager.getConnection(Conf.properties("jdbc.uri"))
       val sql = sqlDefinition.sql
+      statement = connection.prepareStatement(sql)
+
       val columnSeparator = Conf.properties.getOrElse(Conf.SEPARATOR, ",")
 
       logInfo(s"Begin executing sql: $sql")
@@ -48,7 +54,7 @@ class SQLTask(downLatch: CountDownLatch, connection: Connection, statement: Prep
       val timeFormat = new SimpleDateFormat(sqlDefinition.timeFormat)
       val date = new Date
 
-      val newoneClass: Class[_] = Class.forName(StringUtils.defaultString(sqlDefinition.handlerClass, Conf.DEFAULT_HANDLER_CLASS))
+      val newoneClass = Class.forName(StringUtils.defaultString(sqlDefinition.handlerClass, Conf.DEFAULT_HANDLER_CLASS))
       val assembly = newoneClass.newInstance.asInstanceOf[Assembly]
 
       while (sqlResult.next()) {
@@ -76,6 +82,13 @@ class SQLTask(downLatch: CountDownLatch, connection: Connection, statement: Prep
     }
     finally {
       downLatch.countDown()
+      if (null != statement) {
+        statement.close()
+      }
+      if (null != connection) {
+        connection.close()
+        connection = null
+      }
     }
 
   }

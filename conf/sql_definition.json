@@ -2,49 +2,49 @@
   {
     "name":"security-location_IMSI_SEGMENT_ATTR",
     "alias":"公共安全-特定区域客流量常态化监控号码归属地分钟表",
-    "sql":"select SECURITY_AREA,CITY_CODE,count(ROW) from SITEPOSITION group by SECURITY_AREA,CITY_CODE",
+    "sql":"select SECURITY_AREA,CITY_NAME,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by SECURITY_AREA,CITY_NAME having SECURITY_AREA IS NOT NULL and CITY_NAME IS NOT NULL",
     "dateFormat":"yyyy-MM-dd",
     "timeFormat":"yyyy-MM-dd HH:mm"
   },
   {
     "name":"tour-location_IMSI_SEGMENT_ATTR",
     "alias":"景区-特定区域客流量常态化监控号码归属地分钟表",
-    "sql":"select TOUR_AREA,CITY_CODE,count(ROW) from SITEPOSITION group by TOUR_AREA,CITY_CODE",
+    "sql":"select TOUR_AREA,CITY_NAME,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by TOUR_AREA,CITY_NAME having TOUR_AREA IS NOT NULL",
     "dateFormat":"yyyyMMdd",
     "timeFormat":"yyyyMMddHHmm"
   },
   {
     "name":"security-location_registered_residence",
     "alias":"公共安全-特定区域客流量常态化监控户籍地分钟表",
-    "sql":"select SECURITY_AREA,PSPT_EPARCHY_ID,count(ROW) from SITEPOSITION group by SECURITY_AREA,PSPT_EPARCHY_ID",
+    "sql":"select SECURITY_AREA,PSPT_EPARCHY_ID,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by SECURITY_AREA,PSPT_EPARCHY_ID having SECURITY_AREA IS NOT NULL and PSPT_EPARCHY_ID IS NOT NULL",
     "dateFormat":"yyyy-MM-dd",
     "timeFormat":"yyyy-MM-dd HH:mm"
   },
   {
     "name":"security-location_registered_residence_crowd_structure",
     "alias":"公共安全-特定区域客流量常态化监控户籍地人群结构分钟表",
-    "sql":"select SECURITY_AREA,AGE_LEVEL,SEX,EPARCHY_ID,PSPT_PROV_CODE,PSPT_EPARCHY_ID,count(ROW) from SITEPOSITION group by SECURITY_AREA,AGE_LEVEL,SEX,EPARCHY_ID,PSPT_PROV_CODE,PSPT_EPARCHY_ID",
+    "sql":"select SECURITY_AREA,AGE_LEVEL,SEX,EPARCHY_ID,PSPT_PROV_CODE,PSPT_EPARCHY_ID,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by SECURITY_AREA,AGE_LEVEL,SEX,EPARCHY_ID,PSPT_PROV_CODE,PSPT_EPARCHY_ID having SECURITY_AREA IS NOT NULL",
     "dateFormat":"yyyy-MM-dd",
     "timeFormat":"yyyy-MM-dd HH:mm"
   },
   {
     "name":"security-location_area",
     "alias":"公共安全-特定区域客流量常态化监控区域级分钟表",
-    "sql":"select SECURITY_AREA,count(ROW) from SITEPOSITION group by SECURITY_AREA",
+    "sql":"select SECURITY_AREA,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by SECURITY_AREA having SECURITY_AREA IS NOT NULL",
     "dateFormat":"yyyy-MM-dd",
     "timeFormat":"yyyy-MM-dd HH:mm"
   },
   {
     "name":"tour-location_area",
     "alias":"景区-特定区域客流量常态化监控区域级分钟表",
-    "sql":"select TOUR_AREA,count(ROW) from SITEPOSITION group by TOUR_AREA",
+    "sql":"select TOUR_AREA,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by TOUR_AREA having TOUR_AREA IS NOT NULL",
     "dateFormat":"yyyyMMdd",
     "timeFormat":"yyyyMMddHHmm"
   },
   {
     "name":"security-footfall_location_area",
     "alias":"公共安全-客流量常态化监控热力图特定区域级分钟表",
-    "sql":"select LONGITUDE,LATITUDE,SECURITY_AREA,count(ROW) from SITEPOSITION group by LONGITUDE,LATITUDE,SECURITY_AREA",
+    "sql":"select LONGITUDE,LATITUDE,SECURITY_AREA,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by LONGITUDE,LATITUDE,SECURITY_AREA having SECURITY_AREA IS NOT NULL",
     "dateFormat":"yyyy-MM-dd",
     "timeFormat":"yyyy-MM-dd HH:mm",
     "handlerClass":"com.asiainfo.ocdp.sql.output.PeriodFieldAssemblyimpl"
@@ -52,21 +52,21 @@
   {
     "name":"tour-footfall_location_area",
     "alias":"景区-客流量常态化监控热力图特定区域级分钟表",
-    "sql":"select LONGITUDE,LATITUDE,TOUR_AREA,count(ROW) from SITEPOSITION group by LONGITUDE,LATITUDE,TOUR_AREA",
+    "sql":"select LONGITUDE,LATITUDE,TOUR_AREA,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by LONGITUDE,LATITUDE,TOUR_AREA having TOUR_AREA IS NOT NULL",
     "dateFormat":"yyyyMMdd",
     "timeFormat":"yyyyMMddHHmm"
   },
   {
     "name":"tour-footfall_prefectural",
     "alias":"景区-客流量常态化监控热力图地市级分钟表",
-    "sql":"select LONGITUDE,LATITUDE,EPARCHY_ID,count(ROW) from SITEPOSITION group by LONGITUDE,LATITUDE,EPARCHY_ID",
+    "sql":"select LONGITUDE,LATITUDE,EPARCHY_ID,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by LONGITUDE,LATITUDE,EPARCHY_ID having LONGITUDE IS NOT NULL and LATITUDE IS NOT NULL",
     "dateFormat":"yyyyMMdd",
     "timeFormat":"yyyyMMddHHmm"
   },
   {
     "name":"tour-footfall_province",
     "alias":"景区-客流量常态化监控热力图全省分钟表",
-    "sql":"select LONGITUDE,LATITUDE,count(ROW) from SITEPOSITION group by LONGITUDE,LATITUDE",
+    "sql":"select LONGITUDE,LATITUDE,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by LONGITUDE,LATITUDE having LONGITUDE IS NOT NULL and LATITUDE IS NOT NULL",
     "dateFormat":"yyyyMMdd",
     "timeFormat":"yyyyMMddHHmm"
   }

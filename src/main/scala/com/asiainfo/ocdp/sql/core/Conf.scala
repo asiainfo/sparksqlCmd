@@ -28,6 +28,9 @@ object Conf extends Logging{
   val EXPORT_INTERVAL_S = "export.interval-s"
   val DEFAULT_EXPORT_INTERVAL_S = 600L
 
+  val REUSED_CONNECTION_ENABLE = "reused.connection.enable"
+  val DEFAULT_REUSED_CONNECTION_ENABLE = false
+
   var sqlDefinitionFilePath = ""
 
   val OUTPUT_TABLE_HEADER_ENABLE = "output.table.header.enable"
