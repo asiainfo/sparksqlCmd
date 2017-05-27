@@ -15,7 +15,7 @@ import org.apache.commons.io.FileUtils
   */
 object Conf extends Logging{
 
-  case class SQLDefinition(name:String, sql: String, outputPath: String, alias: String, dateFormat: String, timeFormat: String, handlerClass: String)
+  case class SQLDefinition(name:String, sql: String, outputPath: String, alias: String, dateFormat: String, timeFormat: String, handlerClass: String, groupId: String)
 
   val HOME_PATH = Paths.get(classOf[SQLDefinition].getProtectionDomain.getCodeSource.getLocation.getPath).getParent.getParent.toString
   val log4jFilePath = HOME_PATH + File.separator + "conf" + File.separator + "log4j.properties"
@@ -35,6 +35,8 @@ object Conf extends Logging{
 
   val OUTPUT_TABLE_HEADER_ENABLE = "output.table.header.enable"
   val SEPARATOR = "output.table.column.separator"
+
+  val DEFAULT_GROUP_ID = "default_group"
 
   val properties: mutable.HashMap[String, String] = {
     val defaultProperties = new mutable.HashMap[String, String]()

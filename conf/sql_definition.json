@@ -4,7 +4,8 @@
     "alias":"公共安全-特定区域客流量常态化监控号码归属地分钟表",
     "sql":"select SECURITY_AREA,CITY_NAME,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by SECURITY_AREA,CITY_NAME having SECURITY_AREA IS NOT NULL and CITY_NAME IS NOT NULL",
     "dateFormat":"yyyy-MM-dd",
-    "timeFormat":"yyyy-MM-dd HH:mm"
+    "timeFormat":"yyyy-MM-dd HH:mm",
+    "groupId":"1"
   },
   {
     "name":"tour-location_IMSI_SEGMENT_ATTR",
@@ -39,7 +40,8 @@
     "alias":"景区-特定区域客流量常态化监控区域级分钟表",
     "sql":"select TOUR_AREA,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by TOUR_AREA having TOUR_AREA IS NOT NULL",
     "dateFormat":"yyyyMMdd",
-    "timeFormat":"yyyyMMddHHmm"
+    "timeFormat":"yyyyMMddHHmm",
+    "outputPath":"/tmp"
   },
   {
     "name":"security-footfall_location_area",
