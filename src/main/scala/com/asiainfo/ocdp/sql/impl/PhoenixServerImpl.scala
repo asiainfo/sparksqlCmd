@@ -1,15 +1,11 @@
 package com.asiainfo.ocdp.sql.impl
 
-import java.util.Properties
 import java.util.concurrent.{CountDownLatch, Executors}
 
 import com.asiainfo.ocdp.sql.core.Conf.SQLDefinition
 import com.asiainfo.ocdp.sql.core.{Conf, Logging, SQLExecution}
 import org.apache.commons.lang.StringUtils
-import org.apache.hadoop.hbase.HBaseConfiguration
 import org.apache.phoenix.jdbc.PhoenixDriver
-import org.apache.phoenix.mapreduce.util.PhoenixConfigurationUtil
-import org.apache.phoenix.query.HBaseFactoryProvider
 
 import scala.collection.mutable
 
@@ -22,11 +18,11 @@ class PhoenixServerImpl extends SQLExecution with Logging{
     logDebug("Start to run...")
     
     val queryServices = PhoenixDriver.INSTANCE.getQueryServices
-
     val phoenixDriverExecutor = queryServices.getExecutor
 
-    phoenixDriverExecutor.setMaximumPoolSize(Conf.properties.getOrElse(Conf.PHOENIX_QUERY_THREADPOOLSIZE, "10000").toInt)
-
+    logDebug(s"The current props are ${queryServices.getProps.asMap().toString}")
+    
+    logInfo(s"The current phoenix.query.queueSize is ${queryServices.getProps.get("phoenix.query.queueSize")}")
     logInfo(s"The current phoenix.query.threadPoolSize is ${phoenixDriverExecutor.getMaximumPoolSize}")
 
     val executor = Executors.newCachedThreadPool()

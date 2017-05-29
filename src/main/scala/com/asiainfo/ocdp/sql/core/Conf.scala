@@ -37,7 +37,6 @@ object Conf extends Logging{
   val SEPARATOR = "output.table.column.separator"
 
   val DEFAULT_GROUP_ID = "default_group"
-  val PHOENIX_QUERY_THREADPOOLSIZE = "phoenix.query.threadPoolSize"
 
   val properties: mutable.HashMap[String, String] = {
     val defaultProperties = new mutable.HashMap[String, String]()
