@@ -15,7 +15,7 @@ import org.apache.commons.io.FileUtils
   */
 object Conf extends Logging{
 
-  case class SQLDefinition(name:String, sql: String, outputPath: String, alias: String, dateFormat: String, timeFormat: String, handlerClass: String, groupId: String)
+  case class SQLDefinition(name:String, sql: String, outputPath: String, alias: String, dateFormat: String, timeFormat: String, handlerClass: String, groupId: String, operator: String)
 
   val HOME_PATH = Paths.get(classOf[SQLDefinition].getProtectionDomain.getCodeSource.getLocation.getPath).getParent.getParent.toString
   val log4jFilePath = HOME_PATH + File.separator + "conf" + File.separator + "log4j.properties"

@@ -102,12 +102,17 @@ class SQLTask(downLatch: CountDownLatch, sqlDefinition: SQLDefinition) extends R
     val currentFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
     val currentTimeStr = currentFormat.format(date)
     val currentTimeLong = currentFormat.parse(currentTimeStr).getTime
-    val filePostfix = String.valueOf((currentTimeLong - startTimeLong) / 1000 / NumberUtils.toLong(Conf.EXPORT_INTERVAL_S, Conf.DEFAULT_EXPORT_INTERVAL_S))
+    val filePostfix = String.valueOf((currentTimeLong - startTimeLong) / 1000 / NumberUtils.toLong(Conf.properties.get(Conf.EXPORT_INTERVAL_S).get, Conf.DEFAULT_EXPORT_INTERVAL_S))
 
     val outputDir = StringUtils.defaultString(sqlDefinition.outputPath, Conf.BASE_OUTPUT_DIR)
     val filePath = outputDir + File.separator + sqlDefinition.name + "-" + fileDateFormat.format(date) + "_" + filePostfix + Conf.TABLE_FILE_TYPE
 
-    FileUtils.writeLines(new File(filePath), outputResult)
+    if (StringUtils.contains(sqlDefinition.operator, "sum")){
+      FileUtils.writeLines(new File(filePath), Utils.sum(outputResult, Utils.getNumber(sqlDefinition.operator)))
+    }else{
+      FileUtils.writeLines(new File(filePath), outputResult)
+    }
+
 
     filePath
   }
