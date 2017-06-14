@@ -33,14 +33,23 @@ class PhoenixServerImpl extends SQLExecution with Logging{
 
       Conf.allSQLDefinitions.foreach(sqlDefinition => {
         val groupId = if (StringUtils.isEmpty(sqlDefinition.groupId)) Conf.DEFAULT_GROUP_ID else sqlDefinition.groupId
-        if (groupSQLTask.contains(groupId)){
-          groupSQLTask(groupId) += sqlDefinition
-        }else{
-          groupSQLTask += (groupId -> mutable.ArrayBuffer(sqlDefinition))
+
+
+        if (!StringUtils.equalsIgnoreCase(groupId, Conf.IGNORE_GROUP_ID)){
+          if (groupSQLTask.contains(groupId)){
+            groupSQLTask(groupId) += sqlDefinition
+          }else{
+            groupSQLTask += (groupId -> mutable.ArrayBuffer(sqlDefinition))
+          }
+        }
+        else{
+          logInfo(s"Ignore '${sqlDefinition.sql}' since its group id is ${sqlDefinition.groupId}")
         }
       })
 
       logDebug(s"All tasks are ${groupSQLTask}")
+
+      val allStartTime = System.currentTimeMillis()
 
       groupSQLTask.foreach(group_tasks =>{
         val sqlTasks = group_tasks._2
@@ -60,6 +69,8 @@ class PhoenixServerImpl extends SQLExecution with Logging{
 
       })
 
+      val allEndTime = System.currentTimeMillis()
+      logInfo(s"All groups have done and take ${allEndTime - allStartTime} ms.")
 
     } finally {
       if (null != executor){

@@ -26,7 +26,7 @@ else
    else
       echo ${sqlType} | grep "hbase" 1>/dev/null 2>&1
       if [ $? -eq 0 ] ;then
-          java -Duser.dir=${BIN_PATH}/../conf -cp ${CLASSPATH} com.asiainfo.ocdp.sql.launcher.Main ${confPath}
+          java -Xms512m -Xmx1024m -Duser.dir=${BIN_PATH}/../conf -cp ${CLASSPATH} com.asiainfo.ocdp.sql.launcher.Main ${confPath}
       else
         if [ ! -n "$SPARK_HOME" ] ;then
             echo "If sql.type is not thrift, the usage: export.sh <sql definition file path> <SPARK_HOME>"

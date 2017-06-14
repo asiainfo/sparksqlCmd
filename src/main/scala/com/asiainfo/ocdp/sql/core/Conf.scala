@@ -37,6 +37,7 @@ object Conf extends Logging{
   val SEPARATOR = "output.table.column.separator"
 
   val DEFAULT_GROUP_ID = "default_group"
+  val IGNORE_GROUP_ID = "none"
 
   val properties: mutable.HashMap[String, String] = {
     val defaultProperties = new mutable.HashMap[String, String]()
