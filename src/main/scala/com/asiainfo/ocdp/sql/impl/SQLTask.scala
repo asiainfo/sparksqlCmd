@@ -26,7 +26,13 @@ class SQLTask(downLatch: CountDownLatch, sqlDefinition: SQLDefinition) extends R
     var connection: Connection = null
     var statement: PreparedStatement = null
     try {
-      connection = DriverManager.getConnection(Conf.properties("jdbc.uri"))
+      if (Conf.properties.getOrElse("secure.enable", "false").toBoolean){
+        connection = DriverManager.getConnection(Conf.properties("secure.jdbc.uri"))
+      }
+      else{
+        connection = DriverManager.getConnection(Conf.properties("jdbc.uri"))
+      }
+
       val sql = sqlDefinition.sql
       statement = connection.prepareStatement(sql)
 
