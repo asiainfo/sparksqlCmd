@@ -17,7 +17,7 @@
     
     <property>
       <name>phoenix.query.timeoutMs</name>
-      <value>125000</value>
+      <value>600000</value>
     </property>
     
     <property>
