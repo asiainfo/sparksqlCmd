@@ -14,7 +14,8 @@
     "sql":"select TOUR_AREA,CITY_NAME,count(ROW) from SITEPOSITION where SUBSTR(TIMESTAMP,0,8) = TO_CHAR(NOW(), 'yyyyMMdd') group by TOUR_AREA,CITY_NAME having TOUR_AREA IS NOT NULL",
     "dateFormat":"yyyyMMdd",
     "timeFormat":"yyyyMMddHHmm",
-    "groupId":"1"
+    "groupId":"1",
+    "outputSeparator":","
   },
   {
     "name":"security-location_registered_residence",

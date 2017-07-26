@@ -36,7 +36,7 @@ class SQLTask(downLatch: CountDownLatch, sqlDefinition: SQLDefinition) extends R
       val sql = sqlDefinition.sql
       statement = connection.prepareStatement(sql)
 
-      val columnSeparator = Conf.properties.getOrElse(Conf.SEPARATOR, ",")
+      val columnSeparator = StringUtils.defaultIfEmpty(sqlDefinition.outputSeparator, Conf.properties.getOrElse(Conf.SEPARATOR, ","))
 
       logInfo(s"Begin executing sql: $sql")
       val startTime = System.currentTimeMillis()
@@ -56,9 +56,21 @@ class SQLTask(downLatch: CountDownLatch, sqlDefinition: SQLDefinition) extends R
         }
         outputResult += Utils.removeLastSeparator(row.toString(), columnSeparator)
       }
-      val dateFormat = new SimpleDateFormat(sqlDefinition.dateFormat)
-      val timeFormat = new SimpleDateFormat(sqlDefinition.timeFormat)
+
       val date = new Date
+
+      var dateFormatStr = ""
+      var timeFormatStr = ""
+
+      if (StringUtils.isNotEmpty(sqlDefinition.dateFormat)){
+        val dateFormat = new SimpleDateFormat(sqlDefinition.dateFormat)
+        dateFormatStr = dateFormat.format(date)
+      }
+
+      if (StringUtils.isNotEmpty(sqlDefinition.timeFormat)){
+        val timeFormat = new SimpleDateFormat(sqlDefinition.timeFormat)
+        timeFormatStr = timeFormat.format(date)
+      }
 
       val newoneClass = Class.forName(StringUtils.defaultString(sqlDefinition.handlerClass, Conf.DEFAULT_HANDLER_CLASS))
       val assembly = newoneClass.newInstance.asInstanceOf[Assembly]
@@ -69,7 +81,7 @@ class SQLTask(downLatch: CountDownLatch, sqlDefinition: SQLDefinition) extends R
           row.append(sqlResult.getString(i) + columnSeparator)
         }
 
-        outputResult += assembly.execute(dateFormat.format(date), timeFormat.format(date), Utils.removeLastSeparator(row.toString(), columnSeparator))
+        outputResult += assembly.execute(dateFormatStr, timeFormatStr, Utils.removeLastSeparator(row.toString(), columnSeparator), sqlDefinition)
       }
 
 
