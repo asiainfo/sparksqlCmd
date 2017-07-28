@@ -1,38 +1,55 @@
-  <configuration>
-    
+<configuration>
+
     <property>
-      <name>phoenix.query.threadPoolSize</name>
-      <value>10000</value>
+        <name>phoenix.query.threadPoolSize</name>
+        <value>10000</value>
     </property>
-    
     <property>
-      <name>phoenix.functions.allowUserDefinedFunctions</name>
+        <name>phoenix.query.queueSize</name>
+        <value>10000</value>
+    </property>
+
+    <property>
+        <name>phoenix.query.timeoutMs</name>
+        <value>600000</value>
+    </property>
+
+    <!--
+
+    <property>
+      <name>hadoop.security.authentication</name>
+      <value>kerberos</value>
+    </property>
+
+    <property>
+      <name>hadoop.security.authorization</name>
       <value>true</value>
     </property>
-    
+
     <property>
-      <name>phoenix.query.queueSize</name>
-      <value>10000</value>
+      <name>hbase.security.authentication</name>
+      <value>kerberos</value>
     </property>
-    
+
     <property>
-      <name>phoenix.query.timeoutMs</name>
-      <value>600000</value>
+      <name>hbase.master.kerberos.principal</name>
+      <value>hbase/_HOST@ASIAINFO.COM</value>
     </property>
-    
+
     <property>
-      <name>zookeeper.recovery.retry</name>
-      <value>6</value>
+      <name>hbase.master.keytab.file</name>
+      <value>/etc/security/keytabs/hbase.service.keytab</value>
     </property>
-    
+
     <property>
-      <name>zookeeper.session.timeout</name>
-      <value>90000</value>
+      <name>hbase.regionserver.kerberos.principal</name>
+      <value>hbase/_HOST@ASIAINFO.COM</value>
     </property>
-    
+
     <property>
-      <name>zookeeper.znode.parent</name>
-      <value>/hbase-unsecure</value>
+      <name>hbase.regionserver.keytab.file</name>
+      <value>/etc/security/keytabs/hbase.service.keytab</value>
     </property>
-    
-  </configuration>
+
+      -->
+</configuration>

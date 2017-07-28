@@ -17,6 +17,8 @@ do
 done
 
 sqlType=`cat "${BIN_PATH}/../conf/running.properties" |grep "sql.type"`
+secure_enable=`cat "${BIN_PATH}/../conf/running.properties" |grep "secure.enable"`
+
 if [ x"$sqlType" = x ] ;then
    java -cp ${CLASSPATH} com.asiainfo.ocdp.sql.launcher.Main ${confPath}
 else
@@ -26,7 +28,13 @@ else
    else
       echo ${sqlType} | grep "hbase" 1>/dev/null 2>&1
       if [ $? -eq 0 ] ;then
-          java -Xms512m -Xmx1024m -Duser.dir=${BIN_PATH}/../conf -cp ${CLASSPATH} com.asiainfo.ocdp.sql.launcher.Main ${confPath}
+          echo ${sqlType} | grep "false" 1>/dev/null 2>&1
+          if [ $? -eq 0 ] ;then
+              java -Xms512m -Xmx1024m -Duser.dir=${BIN_PATH}/../conf -cp ${CLASSPATH} com.asiainfo.ocdp.sql.launcher.Main ${confPath}
+          else
+              java -Xms512m -Xmx1024m -Djava.security.auth.login.config=${BIN_PATH}/../conf/zookeeper_client_jaas.conf -Duser.dir=${BIN_PATH}/../conf -cp ${CLASSPATH} com.asiainfo.ocdp.sql.launcher.Main ${confPath}
+          fi
+
       else
         if [ ! -n "$SPARK_HOME" ] ;then
             echo "If sql.type is not thrift, the usage: export.sh <sql definition file path> <SPARK_HOME>"
