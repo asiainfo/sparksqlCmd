@@ -26,11 +26,17 @@ class SQLTask(downLatch: CountDownLatch, sqlDefinition: SQLDefinition) extends R
     var connection: Connection = null
     var statement: PreparedStatement = null
     try {
-      connection = DriverManager.getConnection(Conf.properties("jdbc.uri"))
+      if (Conf.properties.getOrElse("secure.enable", "false").toBoolean){
+        connection = DriverManager.getConnection(Conf.properties("secure.jdbc.uri"))
+      }
+      else{
+        connection = DriverManager.getConnection(Conf.properties("jdbc.uri"))
+      }
+
       val sql = sqlDefinition.sql
       statement = connection.prepareStatement(sql)
 
-      val columnSeparator = Conf.properties.getOrElse(Conf.SEPARATOR, ",")
+      val columnSeparator = StringUtils.defaultIfEmpty(sqlDefinition.outputSeparator, Conf.properties.getOrElse(Conf.SEPARATOR, ","))
 
       logInfo(s"Begin executing sql: $sql")
       val startTime = System.currentTimeMillis()
@@ -50,9 +56,21 @@ class SQLTask(downLatch: CountDownLatch, sqlDefinition: SQLDefinition) extends R
         }
         outputResult += Utils.removeLastSeparator(row.toString(), columnSeparator)
       }
-      val dateFormat = new SimpleDateFormat(sqlDefinition.dateFormat)
-      val timeFormat = new SimpleDateFormat(sqlDefinition.timeFormat)
+
       val date = new Date
+
+      var dateFormatStr = ""
+      var timeFormatStr = ""
+
+      if (StringUtils.isNotEmpty(sqlDefinition.dateFormat)){
+        val dateFormat = new SimpleDateFormat(sqlDefinition.dateFormat)
+        dateFormatStr = dateFormat.format(date)
+      }
+
+      if (StringUtils.isNotEmpty(sqlDefinition.timeFormat)){
+        val timeFormat = new SimpleDateFormat(sqlDefinition.timeFormat)
+        timeFormatStr = timeFormat.format(date)
+      }
 
       val newoneClass = Class.forName(StringUtils.defaultString(sqlDefinition.handlerClass, Conf.DEFAULT_HANDLER_CLASS))
       val assembly = newoneClass.newInstance.asInstanceOf[Assembly]
@@ -63,7 +81,7 @@ class SQLTask(downLatch: CountDownLatch, sqlDefinition: SQLDefinition) extends R
           row.append(sqlResult.getString(i) + columnSeparator)
         }
 
-        outputResult += assembly.execute(dateFormat.format(date), timeFormat.format(date), Utils.removeLastSeparator(row.toString(), columnSeparator))
+        outputResult += assembly.execute(dateFormatStr, timeFormatStr, Utils.removeLastSeparator(row.toString(), columnSeparator), sqlDefinition)
       }
 
 
@@ -102,12 +120,17 @@ class SQLTask(downLatch: CountDownLatch, sqlDefinition: SQLDefinition) extends R
     val currentFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
     val currentTimeStr = currentFormat.format(date)
     val currentTimeLong = currentFormat.parse(currentTimeStr).getTime
-    val filePostfix = String.valueOf((currentTimeLong - startTimeLong) / 1000 / NumberUtils.toLong(Conf.EXPORT_INTERVAL_S, Conf.DEFAULT_EXPORT_INTERVAL_S))
+    val filePostfix = String.valueOf((currentTimeLong - startTimeLong) / 1000 / NumberUtils.toLong(Conf.properties.get(Conf.EXPORT_INTERVAL_S).get, Conf.DEFAULT_EXPORT_INTERVAL_S))
 
     val outputDir = StringUtils.defaultString(sqlDefinition.outputPath, Conf.BASE_OUTPUT_DIR)
     val filePath = outputDir + File.separator + sqlDefinition.name + "-" + fileDateFormat.format(date) + "_" + filePostfix + Conf.TABLE_FILE_TYPE
 
-    FileUtils.writeLines(new File(filePath), outputResult)
+    if (StringUtils.contains(sqlDefinition.operator, "sum")){
+      FileUtils.writeLines(new File(filePath), Utils.sum(outputResult, Utils.getNumber(sqlDefinition.operator)))
+    }else{
+      FileUtils.writeLines(new File(filePath), outputResult)
+    }
+
 
     filePath
   }

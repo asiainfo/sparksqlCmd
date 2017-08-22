@@ -2,5 +2,6 @@
 .gitignore
 .idea/
 /target/
-sparksqlRun.iml
+*.iml
 /build/
+src/main/resources/

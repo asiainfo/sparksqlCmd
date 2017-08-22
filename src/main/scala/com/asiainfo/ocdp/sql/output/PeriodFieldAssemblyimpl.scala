@@ -1,12 +1,13 @@
 package com.asiainfo.ocdp.sql.output
 
+import com.asiainfo.ocdp.sql.core.Conf.SQLDefinition
 import com.asiainfo.ocdp.sql.core.{Conf, Logging}
 
 /**
   * Created by peng on 2016/12/13.
   */
 class PeriodFieldAssemblyimpl extends Assembly with Logging {
-  override def execute(date: String, time: String, col: String): String = {
+  override def execute(date: String, time: String, col: String, sqlDefinition: SQLDefinition): String = {
     val columnSeparator = Conf.properties.getOrElse(Conf.SEPARATOR, ",")
     val date_time: Array[String] = time.split(" ")
     val period_min: Array[String] = date_time(1).split(":")
